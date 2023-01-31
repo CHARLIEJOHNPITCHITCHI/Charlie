@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        // Initialiser les données pour les votes
+        var voteData = {
+          "Candidat 1": 0,
+          "Candidat 2": 0,
+          "Candidat 3": 0,
+          "Candidat 4": 0
+        };
+
+        // Surveiller les soumissions de formulaires
+        $("form").submit(function(e) {
+          e.preventDefault();
+          var selectedCandidate = $("input[name='candidate']:checked").val();
+          voteData[selectedCandidate]++;
+
+          // Mettre à jour les données pour le graphique
+          myPieChart.data.datasets[0].data = Object.values(voteData);
+          myPieChart.update();
+        });
+
+        // Initialiser le graphique circulaire
+        var ctx = $("#myChart");
+        var myPieChart = new Chart(ctx, {
+          type: "pie",
+          data: {
+            labels: Object.keys(voteData),
+            datasets: [
+              {
+                data: Object.values(voteData),
+                backgroundColor: [
+                  "#F7464A",
+                  "#46BFBD",
+                  "#FDB45C",
+                  "#949FB1"
+                ]
+              }
+            ]
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <form>
+      <label for="candidate-1">farice:</label>
+      <input type="radio" id="candidate-1" name="candidate" value="Candidat 1">
+      <br>
+      <label for="candidate-2">inoss:</label>
+      <input type="radio" id="candidate-2" name="candidate" value="Candidat 2">
+      <br>
+      <label for="candidate-3">emile:</label>
+      <input type="radio" id="candidate-3" name="candidate" value="Candidat 3">
+      <br>
+      <label for="candidate-4">yazoo:</label>
+      <input type="radio" id="candidate-4" name="candidate" value="Candidat 4">
+      <br>
+      <input type="submit" value="Vote">
+    </form>
+    <canvas id="myChart" width="400" height="400"></canvas>
+  </body>
+</html>
